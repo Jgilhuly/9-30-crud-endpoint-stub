@@ -4,7 +4,7 @@ import uvicorn
 
 from fastapi import FastAPI, HTTPException
 
-from models import Product, ProductCreate, ProductUpdate, User, UserCreate, UserUpdate
+from models import Product, ProductCreate, ProductUpdate, User, UserCreate, UserUpdate, UserResponse
 from database import db
 
 app = FastAPI(
@@ -12,6 +12,16 @@ app = FastAPI(
     description="A simple CRUD API for managing products and users",
     version="1.0.0"
 )
+
+
+def user_to_response(user: User) -> UserResponse:
+    """Convert User model to UserResponse model, excluding password."""
+    return UserResponse(
+        id=user.id,
+        name=user.name,
+        email=user.email,
+        created_at=user.created_at
+    )
 
 
 @app.get("/")
@@ -63,29 +73,31 @@ def delete_product(product_id: int):
         return {"message": "Product deleted successfully"}
     raise HTTPException(status_code=404, detail="Product not found")
 
-@app.post("/users", response_model=User)
+@app.post("/users", response_model=UserResponse)
 def create_user(user: UserCreate):
     """Create a new user"""
     # TODO: Add validation logic here
-    return db.create_user(user)
+    created_user = db.create_user(user)
+    return user_to_response(created_user)
 
-@app.get("/users", response_model=List[User])
+@app.get("/users", response_model=List[UserResponse])
 def get_users():
-    return db.get_all_users()
+    users = db.get_all_users()
+    return [user_to_response(user) for user in users]
 
-@app.get("/users/{user_id}", response_model=User)
+@app.get("/users/{user_id}", response_model=UserResponse)
 def get_user(user_id: int):
     user = db.get_user(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+    return user_to_response(user)
 
-@app.put("/users/{user_id}", response_model=User)
+@app.put("/users/{user_id}", response_model=UserResponse)
 def update_user(user_id: int, user_update: UserUpdate):
     updated_user = db.update_user(user_id, user_update)
     if not updated_user:
         raise HTTPException(status_code=404, detail="User not found")
-    return updated_user
+    return user_to_response(updated_user)
 
 @app.delete("/users/{user_id}")
 def delete_user(user_id: int):

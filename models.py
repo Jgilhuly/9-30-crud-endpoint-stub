@@ -37,12 +37,20 @@ class ProductUpdate(BaseModel):
     in_stock: Optional[bool] = None
 
 class User(BaseModel):
-    """Model for a user."""
+    """Internal model for a user with all fields including password."""
     id: int
     name: str
     email: str
     password: str
     created_at: datetime = datetime.now()
+
+
+class UserResponse(BaseModel):
+    """Response model for a user without sensitive fields."""
+    id: int
+    name: str
+    email: str
+    created_at: datetime
 
 
 class UserCreate(BaseModel):

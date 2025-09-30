@@ -93,8 +93,8 @@ class TestRootEndpoints:
 class TestProductEndpoints:
     """Tests for product CRUD endpoints."""
 
-    def test_get_all_products_empty(self, client):
-        """Test getting all products when database is initially empty (no sample data)."""
+    def test_get_all_products_with_sample_data(self, client):
+        """Test getting all products with sample data present."""
         # Arrange - client fixture provides fresh db with sample data
         
         # Act
@@ -237,6 +237,9 @@ class TestUserEndpoints:
         users = response.json()
         assert isinstance(users, list)
         assert len(users) == 3  # Sample data count
+        # Verify no passwords are exposed in any user
+        for user in users:
+            assert "password" not in user
 
     def test_create_user(self, client):
         """Test creating a new user."""
@@ -251,7 +254,7 @@ class TestUserEndpoints:
         created_user = response.json()
         assert created_user["name"] == user_data["name"]
         assert created_user["email"] == user_data["email"]
-        assert created_user["password"] == user_data["password"]
+        assert "password" not in created_user  # Password should not be exposed
         assert "id" in created_user
         assert "created_at" in created_user
 
@@ -272,6 +275,7 @@ class TestUserEndpoints:
         assert retrieved_user["id"] == user_id
         assert retrieved_user["name"] == user_data["name"]
         assert retrieved_user["email"] == user_data["email"]
+        assert "password" not in retrieved_user  # Password should not be exposed
 
     def test_get_user_not_found(self, client):
         """Test getting a non-existent user returns 404."""
@@ -304,8 +308,8 @@ class TestUserEndpoints:
         assert updated_user["id"] == user_id
         assert updated_user["name"] == update_data["name"]
         assert updated_user["email"] == update_data["email"]
-        # Fields not in update should remain unchanged
-        assert updated_user["password"] == user_data["password"]
+        # Password should not be exposed in response
+        assert "password" not in updated_user
 
     def test_update_user_not_found(self, client):
         """Test updating a non-existent user returns 404."""
