@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>App</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script>(function(){try{var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var theme=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',theme);}catch(e){}})();</script>
+    <script defer src="./theme.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1 class="site-title">App</h1>
+        <button id="theme-toggle" type="button" aria-pressed="false" class="theme-toggle">Dark mode</button>
+      </div>
+    </header>
+    <main class="container">
+      <p>Toggle dark mode to see the theme change.</p>
+    </main>
+  </body>
+</html>

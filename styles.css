@@ -1,0 +1,83 @@
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --link: #2563eb;
+  --border: #e5e7eb;
+  --header-bg: #ffffff;
+  --button-bg: #f3f4f6;
+  --button-text: #111827;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --link: #93c5fd;
+  --border: #1f2937;
+  --header-bg: #0b1220;
+  --button-bg: #1f2937;
+  --button-text: #e5e7eb;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--header-bg);
+  position: sticky;
+  top: 0;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-toggle {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
